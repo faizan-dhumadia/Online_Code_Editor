@@ -1,13 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import Ide from "./Screens/Ide/Ide";
 
 function App() {
   return (
-    <div>
-
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+    <div className="">
+      <Ide />
     </div>
   );
 }
