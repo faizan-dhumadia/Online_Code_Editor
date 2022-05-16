@@ -261,7 +261,6 @@ const Ide = () => {
   const [editorLang, setEditorLang] = useState(languages[1]);
   const [userInput, setUserInput] = useState("");
   const [codeOutput, setCodeOutput] = useState("");
-<<<<<<< HEAD
   const [loading, setLoading] = useState(false);
 
   const CodeError = "Write a Code first"
@@ -318,40 +317,13 @@ const Ide = () => {
           </button>
 
         </div>
-=======
-
-  const handleSubmit = async () => {
-    let token = await submitCodeService(code, editorLang, userInput);
-    // console.log(code);
-    // console.log("Hello ,", await submitCodeService(code, editorLang, ""));
-    console.log("Output : ", await token?.stdout);
-    setCodeOutput(await token?.stdout);
-  };
-
-  return (
-    <div className="">
-      <div className="inline-flex">
-        <select
-          onChange={(e) => setSelectedTheme(e.target.value)}
-          id="countries"
-          className="my-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        >
-          {themes.map((theme) => {
-            return <option value={theme}>{theme}</option>;
-          })}
-        </select>
->>>>>>> c6ce426bfb499f8c50ce25bb90d3465d66483633
 
         <select
           onChange={(e) => {
             setEditorLang(e.target.value);
             console.log(e.target.value);
           }}
-<<<<<<< HEAD
           className="cursor-pointer my-1 w-full md:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5"
-=======
-          className="my-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
->>>>>>> c6ce426bfb499f8c50ce25bb90d3465d66483633
         >
           {/* {languages.map((lang) => {
             return <option value={lang}>{lang}</option>;
@@ -360,7 +332,6 @@ const Ide = () => {
             return <option value={item.id}>{item.name}</option>;
           })}
         </select>
-<<<<<<< HEAD
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
@@ -391,14 +362,6 @@ const Ide = () => {
           <AceEditor
             width="100%"
             height="90vh"
-=======
-      </div>
-
-      <div>
-        <div className="w-1/2">
-          <AceEditor
-            width="100%"
->>>>>>> c6ce426bfb499f8c50ce25bb90d3465d66483633
             placeholder="Enter your code here"
             mode="java"
             // mode={`${editorLang}`}
@@ -420,7 +383,6 @@ const Ide = () => {
             }}
           />
         </div>
-<<<<<<< HEAD
 
 
         {/* Input and Output Box */}
@@ -522,61 +484,10 @@ const Ide = () => {
       </div>
 
 
-=======
-      </div>
-
-      <div className="flex flex-row    ">
-        <div className="w-full">
-          <label
-            for="message"
-            class="block mb-2 text-sm font-medium text-white dark:text-gray-400"
-          >
-            {"Input"}
-          </label>
-          <textarea
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            id="message"
-            rows="4"
-            class="block p-2.5 w-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Your message..."
-          ></textarea>
-        </div>
-        <div className="w-full">
-          <label
-            for="message"
-            class="block mb-2 text-sm font-medium text-white dark:text-gray-400"
-          >
-            {"Output"}
-          </label>
-          <textarea
-            id="message"
-            rows="4"
-            class="block p-2.5 w-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Your message..."
-            disabled
-            value={codeOutput}
-          ></textarea>
-        </div>
-      </div>
-
-      <button
-        onClick={handleSubmit}
-        className="my-4 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
-      >
-        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-          Submit
-        </span>
-      </button>
->>>>>>> c6ce426bfb499f8c50ce25bb90d3465d66483633
     </div>
   );
 };
 
-<<<<<<< HEAD
 const submitCode = () => { };
-=======
-const submitCode = () => {};
->>>>>>> c6ce426bfb499f8c50ce25bb90d3465d66483633
 
 export default Ide;
