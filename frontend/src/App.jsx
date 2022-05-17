@@ -1,12 +1,31 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Ide from "./Screens/Ide/Ide";
+import Navbar from "./Components/Navbar";
+import UserState from "./context/users/UserState";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Signup from './Components/Signup';
+import Login from './Components/Login';
 
 function App() {
   return (
-    <div className="">
-      <Ide />
-    </div>
+    <UserState>
+      <div className="">
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
+            <Route exact path="/" element={<Ide />} />
+          </Routes>
+          {/* <Ide /> */}
+        </BrowserRouter>
+      </div>
+    </UserState>
   );
 }
 
