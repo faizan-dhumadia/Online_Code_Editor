@@ -267,7 +267,7 @@ const Ide = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    if (code != '') {
+    if (code !== '') {
       let token = await submitCodeService(code, editorLang, userInput);
       console.log(code);
       console.log("Hello ,", await submitCodeService(code, editorLang, ""));
