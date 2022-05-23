@@ -1,24 +1,25 @@
 const express = require("express");
-const fetchuser = require("../middleware/fetchuser");
 const router = express.Router();
 const Questions = require("../models/Questions");
 const { body, validationResult } = require('express-validator');
+const fetchadmin = require("../middleware/fetchadmin");
+const Admin = require('../models/Admin')
 
-
-//GET "/api/questions/list"
-router.get('/list', async(req, res) => {
+//GET "/api/admin/questions/getadminQues" Login is Required
+router.get('/getadminQues', fetchadmin, async(req, res) => {
     try {
-        const Qlist = await Questions.find({});
-        res.send(Qlist)
+        const admin = await Admin.find({ admin: req.admin.id })
+        res.json(admin);
+
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Some error occured at /list api")
+        res.status(500).send("Some error occured")
     }
-})
+});
 
 
-//POST "/api/questions/post" Login is Required
-router.post('/post', fetchuser, [
+//POST "/api/admin/questions/post" Login is Required
+router.post('/post', fetchadmin, [
     body('title', 'Enter the valid title').isLength({ min: 3 }),
     body('description', 'Enter the valid description').isLength({ min: 5 }),
     body('constraints', 'Enter the valid constraints').isLength({ min: 5 }),
@@ -44,7 +45,7 @@ router.post('/post', fetchuser, [
             difficulty,
             category,
             examples,
-            user: req.user.id
+            admin: req.admin.id
         });
         const saveQues = await ques.save();
         res.json(saveQues);
@@ -56,15 +57,15 @@ router.post('/post', fetchuser, [
 })
 
 
-//DELETE "/api/questions/deleteQues/:id" Login is Required
-router.delete('/deleteQues/:id', fetchuser, async(req, res) => {
+//DELETE "/api/admin/questions/deleteQues/:id" Login is Required
+router.delete('/deleteQues/:id', fetchadmin, async(req, res) => {
     try {
         let ques = await Questions.findById(req.params.id);
         console.log(ques);
         if (!ques) {
             return res.status(404).send("Question found");
         }
-        if (ques.user.toString() !== req.user.id) {
+        if (ques.admin.toString() !== req.admin.id) {
             return res.status(401).send("Not allowed")
         }
         ques = await Questions.findByIdAndDelete(req.params.id)
@@ -75,8 +76,8 @@ router.delete('/deleteQues/:id', fetchuser, async(req, res) => {
     }
 })
 
-//PUT "/api/questions/updateQues/:id" Login is Required
-router.put('/updateQues/:id', fetchuser, async(req, res) => {
+//PUT "/api/admin/questions/updateQues/:id" Login is Required
+router.put('/updateQues/:id', fetchadmin, async(req, res) => {
     try {
         const { title, description, constraints, expectedOutput, difficulty, category, examples } = req.body;
         //Create a new node object
@@ -108,7 +109,7 @@ router.put('/updateQues/:id', fetchuser, async(req, res) => {
         if (!ques) {
             return res.status(404).send("Question found")
         }
-        if (ques.user.toString() !== req.user.id) {
+        if (ques.admin.toString() !== req.admin.id) {
             return res.status(401).send("Not allowed")
         }
 

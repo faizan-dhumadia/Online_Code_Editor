@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const questionSchema = new Schema({
-    user: {
+    admin: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'admin'
     },
     title: {
         type: String,
