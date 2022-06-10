@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import userContext from '../context/users/userContext'
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import userContext from "../context/users/userContext";
 
 const Navbar = () => {
@@ -9,13 +9,20 @@ const Navbar = () => {
   const { logOut } = context;
   const navigator = useNavigate();
   const authToken = useSelector((state) => state.user.authToken);
+  const [reloadKey, setReloadKey] = useState(1)
 
   const logOutCall = () => {
+    setReloadKey(Math.random())
+    // console.log(reloadKey);
     logOut();
     navigator("/");
-    console.log(authToken);
+    // console.log(authToken);
   };
-  useEffect(() => {}, [authToken]);
+  useEffect(() => {
+    // console.log("Navbar ReloadKey change:", reloadKey, " ", authToken.payload);
+    // const authToken = useSelector((state) => state.user.authToken);
+
+  }, [reloadKey]);
 
   return (
     <div>
@@ -27,7 +34,7 @@ const Navbar = () => {
             </span>
           </a>
           <div className="btn">
-            {authToken == "" ? (
+            {authToken.payload === undefined || authToken.payload === '' ? (
               <div>
                 <Link to="/signup">
                   <button
@@ -49,7 +56,7 @@ const Navbar = () => {
                   </button>
                 </Link>
               </div>
-            ) : (
+            ) : (authToken.payload !== "" &&
               <div>
                 <button
                   type="button"
@@ -61,10 +68,10 @@ const Navbar = () => {
                 </button>
               </div>
             )}{" "}
-          </div>
-        </div>
+          </div></div>
       </nav>
     </div>
+
   );
 };
 

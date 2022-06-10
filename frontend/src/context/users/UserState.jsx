@@ -16,11 +16,11 @@ const UserState = (props) => {
       body: JSON.stringify({ "name": name, "email": email, "password": password })
     });
     const data = await response.json()
-    dispatch(setAuthToken(data))
+    // console.log("Data:",data.authToken);
+    dispatch(setAuthToken(data.authToken))
     // console.log(name);
     // console.log(email);
     // console.log(password);
-    console.log(data);
     getUser(data);
   }
   const loginUser = async (email, password) => {
@@ -32,7 +32,7 @@ const UserState = (props) => {
       body: JSON.stringify({ email, password })
     });
     const data = await response.json()
-    dispatch(setAuthToken(data))
+    dispatch(setAuthToken(data.authToken))
     // console.log(name);
     // console.log(email);
     // console.log(password);
