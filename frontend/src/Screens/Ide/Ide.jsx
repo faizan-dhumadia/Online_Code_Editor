@@ -28,7 +28,7 @@ import "ace-builds/src-noconflict/theme-solarized_dark";
 import "ace-builds/src-noconflict/theme-textmate";
 
 import { submitCodeService, getLanguagesService } from "../../Service/service";
-
+import { submitCode } from "../../Service/newService";
 function onChange(newValue) {
   //   console.log("change", newValue);
 }
@@ -258,37 +258,37 @@ const Ide = () => {
   const [themeSelected, setSelectedTheme] = useState(themes[6]);
   const [code, setCode] = useState("");
   const [showLangDrop, setShowLangDrop] = useState(false);
-  const [editorLang, setEditorLang] = useState(languages[1]);
+  const [editorLang, setEditorLang] = useState(null);
   const [userInput, setUserInput] = useState("");
   const [codeOutput, setCodeOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const CodeError = "Write a Code first"
+  const CodeError = "Write a Code first";
 
   const handleSubmit = async () => {
     setLoading(true);
-    if (code !== '') {
-      let token = await submitCodeService(code, editorLang, userInput);
-      console.log(code);
-      console.log("Hello ,", await submitCodeService(code, editorLang, ""));
-      console.log("Output : ", await token?.stdout);
-      setCodeOutput(await token?.stdout);
-    }
-    else{
-      setCodeOutput(CodeError)
+    if (code !== "" && editorLang != null) {
+      // let token = await submitCodeService(code, editorLang, userInput);
+      // console.log(code);
+      // console.log("Hello ,", await submitCodeService(code, editorLang, ""));
+      // console.log("Output : ", await token?.stdout);
+      // setCodeOutput(await token?.stdout);
+      let output = await submitCode(code, editorLang, userInput);
+      console.log(output);
+      setCodeOutput(output?.stdout);
+    } else {
+      if (editorLang == null)
+        setCodeOutput("Please select your language first");
+      else setCodeOutput(CodeError);
     }
     setLoading(false);
   };
 
-
   return (
-    <div className="">
-
+    <div className="px-6">
       {/* Theme / Lang Selector */}
       <div className=" m-2 md:flex md:flex-row md:justify-between md:w-1/2">
-
         <div className="flex flex-row justify-between ">
-
           <select
             onChange={(e) => setSelectedTheme(e.target.value)}
             id="countries"
@@ -300,22 +300,36 @@ const Ide = () => {
           </select>
           <button
             onClick={handleSubmit}
-            className={`md:hidden relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br ${loading ? 'from-purple-400 to-blue-300 cursor-not-allowed' : 'from-purple-600 to-blue-500'}  group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white `}
+            className={`md:hidden relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br ${
+              loading
+                ? "from-purple-400 to-blue-300 cursor-not-allowed"
+                : "from-purple-600 to-blue-500"
+            }  group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white `}
             disabled={loading ? true : false}
           >
             <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0 flex flex-row items-center justify-center">
-
-
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
-              <span className="hidden md:block pl-2">
-                Run Code
-              </span>
+              <span className="hidden md:block pl-2">Run Code</span>
             </span>
           </button>
-
         </div>
 
         <select
@@ -328,6 +342,9 @@ const Ide = () => {
           {/* {languages.map((lang) => {
             return <option value={lang}>{lang}</option>;
           })} */}
+          <option disabled selected>
+            Select Language
+          </option>
           {langData.map((item) => {
             return <option value={item.id}>{item.name}</option>;
           })}
@@ -335,28 +352,39 @@ const Ide = () => {
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          className={`hidden min-w-fit md:block relative items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br ${loading ? 'from-purple-400 to-blue-300 cursor-not-allowed' : 'from-purple-600 to-blue-500'} group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white `}
+          className={`hidden min-w-fit md:block relative items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br ${
+            loading
+              ? "from-purple-400 to-blue-300 cursor-not-allowed"
+              : "from-purple-600 to-blue-500"
+          } group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white `}
           disabled={loading ? true : false}
         >
           <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0 flex flex-row items-center justify-center">
-
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
-            <span className="hidden md:block pl-2">
-              Run Code
-            </span>
+            <span className="hidden md:block pl-2">Run Code</span>
           </span>
-
-
         </button>
       </div>
 
-
       <div className="md:flex md:flex-row ">
-
-
         {/* IDE */}
         <div className="md:w-1/2 h-1/2 md:mr-2">
           <AceEditor
@@ -384,16 +412,11 @@ const Ide = () => {
           />
         </div>
 
-
         {/* Input and Output Box */}
         <div className="md:w-1/2 h-1/2 ">
-
           {/* Input Box */}
-          <div className=' md:hidden'>
-            <label
-              for="message"
-              class="block mb-2 text-sm font-medium "
-            >
+          <div className=" md:hidden">
+            <label for="message" class="block mb-2 text-sm font-medium ">
               {"Input"}
             </label>
             <textarea
@@ -401,7 +424,9 @@ const Ide = () => {
               onChange={(e) => setUserInput(e.target.value)}
               id="message"
               rows="5"
-              class={`resize-none block p-2.5 w-full md:h-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ${loading ? 'cursor-not-allowed' : ''}`}
+              class={`resize-none block p-2.5 w-full md:h-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ${
+                loading ? "cursor-not-allowed" : ""
+              }`}
               placeholder="Your Input..."
               disabled={loading ? true : false}
             ></textarea>
@@ -409,23 +434,18 @@ const Ide = () => {
 
           {/* Output Box */}
           <div className="">
-
-            <label
-              for="message"
-              class="block mb-2 text-sm font-medium "
-            >
+            <label for="message" class="block mb-2 text-sm font-medium ">
               {"Output"}
             </label>
             <pre
               id="message"
               // rows=""
               class="overflow-y-scroll block p-2.5 w-full h-[50vh] text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-            // placeholder="Your message..."
-            // disabled
-            // value={codeOutput}
-
+              // placeholder="Your message..."
+              // disabled
+              // value={codeOutput}
             >
-              {loading ?
+              {loading ? (
                 <div class=" rounded-md p-4 w-full mx-auto">
                   <div class="animate-pulse flex space-x-4">
                     <div class="flex-1 space-y-6 py-1">
@@ -440,29 +460,25 @@ const Ide = () => {
                     </div>
                   </div>
                 </div>
-                :
-                <div> {codeOutput === undefined ?
-                  <div className="text-xl">
-                    <span className="text-red-700"> Error:</span> Something is Wrong
-                  </div>
-                  : codeOutput}
+              ) : (
+                <div>
+                  {" "}
+                  {codeOutput === undefined ? (
+                    <div className="text-xl">
+                      <span className="text-red-700"> Error:</span> Something is
+                      Wrong
+                    </div>
+                  ) : (
+                    codeOutput
+                  )}
                 </div>
-              }
-
-
-
+              )}
             </pre>
-
-
-
           </div>
 
           {/* Input Box */}
-          <div className='hidden md:block'>
-            <label
-              for="message"
-              class="block mb-2 text-sm font-medium "
-            >
+          <div className="hidden md:block">
+            <label for="message" class="block mb-2 text-sm font-medium ">
               {"Input"}
             </label>
             <textarea
@@ -470,24 +486,17 @@ const Ide = () => {
               onChange={(e) => setUserInput(e.target.value)}
               id="message"
               rows="5"
-              class={`resize-none block p-2.5 w-full md:h-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ${loading ? 'cursor-not-allowed' : ''}`}
+              class={`resize-none block p-2.5 w-full md:h-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ${
+                loading ? "cursor-not-allowed" : ""
+              }`}
               placeholder="Your Input..."
               disabled={loading ? true : false}
             ></textarea>
           </div>
-
-
-
         </div>
-
-
       </div>
-
-
     </div>
   );
 };
-
-const submitCode = () => { };
 
 export default Ide;
