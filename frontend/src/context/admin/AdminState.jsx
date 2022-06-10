@@ -1,14 +1,14 @@
-import UserContext from "./userContext";
+import AdminContext from "./userContext";
 import { useSelector, useDispatch } from "react-redux";
-import { setAuthToken, setEmail, setName, setPass, setUserId } from "../../store/userSlice";
+import { setAdminToken, setaEmail, setaName, setaPass, setAdminId } from "../../store/adminSlice";
 
 
 const UserState = (props) => {
   const host = "http://localhost:5000"
   const dispatch = useDispatch()
 
-  const createUser = async (name, email, password) => {
-    const response = await fetch(`${host}/api/auth/createuser`, {
+  const createAdmin = async (name, email, password) => {
+    const response = await fetch(`${host}/api/admin/createadmin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -16,15 +16,15 @@ const UserState = (props) => {
       body: JSON.stringify({ "name": name, "email": email, "password": password })
     });
     const data = await response.json()
-    // console.log("Data:",data.authToken);
-    dispatch(setAuthToken(data.authToken))
+    // console.log("Data:",data.adminToken);
+    dispatch(setAdminToken(data.adminToken))
     // console.log(name);
     // console.log(email);
     // console.log(password);
     getUser(data);
   }
-  const loginUser = async (email, password) => {
-    const response = await fetch(`${host}/api/auth/login`, {
+  const loginAdmin = async (email, password) => {
+    const response = await fetch(`${host}/api/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,26 +32,26 @@ const UserState = (props) => {
       body: JSON.stringify({ email, password })
     });
     const data = await response.json()
-    dispatch(setAuthToken(data.authToken))
+    dispatch(setAdminToken(data.adminToken))
     // console.log(name);
     // console.log(email);
     // console.log(password);
     console.log(data);
     getUser(data);
   }
-  const getUser = async (token) => {
-    console.log(token.authToken);
-    const response = await fetch(`${host}/api/auth/getuser`, {
+  const getAdmin = async (token) => {
+    console.log(token.adminToken);
+    const response = await fetch(`${host}/api/admin/getadmin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': token.authToken,
+        'auth-token': token.adminToken,
       }
     });
     const data = await response.json()
-    dispatch(setUserId(data._id))
-    dispatch(setName(data.name))
-    dispatch(setEmail(data.email))
+    dispatch(setAdminId(data._id))
+    dispatch(setaName(data.name))
+    dispatch(setaEmail(data.email))
     console.log("getUser Data is called");
     console.log(data._id);
     console.log(data.email);
@@ -59,15 +59,15 @@ const UserState = (props) => {
     console.log(data);
   }
 
-  const logOut = () =>{
-    dispatch(setAuthToken(''))
-    dispatch(setName(''))
-    dispatch(setUserId(''))
-    dispatch(setPass(''))
-    dispatch(setEmail(''))
+  const logOutAdmin = () => {
+    dispatch(setAdminToken(''))
+    dispatch(setaName(''))
+    dispatch(setaUserId(''))
+    dispatch(setaPass(''))
+    dispatch(setaEmail(''))
   }
   return (
-    <UserContext.Provider value={{ createUser, loginUser,logOut }}>
+    <UserContext.Provider value={{ createAdmin, loginAdmin, logOutAdmin }}>
       {props.children}
     </UserContext.Provider>
   )
