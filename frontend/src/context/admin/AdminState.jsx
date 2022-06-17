@@ -1,9 +1,9 @@
-import AdminContext from "./userContext";
+import AdminContext from "./adminContext";
 import { useSelector, useDispatch } from "react-redux";
 import { setAdminToken, setaEmail, setaName, setaPass, setAdminId } from "../../store/adminSlice";
 
 
-const UserState = (props) => {
+const AdminState = (props) => {
   const host = "http://localhost:5000"
   const dispatch = useDispatch()
 
@@ -21,7 +21,7 @@ const UserState = (props) => {
     // console.log(name);
     // console.log(email);
     // console.log(password);
-    getUser(data);
+    getAdmin(data);
   }
   const loginAdmin = async (email, password) => {
     const response = await fetch(`${host}/api/admin/login`, {
@@ -37,7 +37,7 @@ const UserState = (props) => {
     // console.log(email);
     // console.log(password);
     console.log(data);
-    getUser(data);
+    getAdmin(data);
   }
   const getAdmin = async (token) => {
     console.log(token.adminToken);
@@ -52,7 +52,7 @@ const UserState = (props) => {
     dispatch(setAdminId(data._id))
     dispatch(setaName(data.name))
     dispatch(setaEmail(data.email))
-    console.log("getUser Data is called");
+    console.log("getAdmin Data is called");
     console.log(data._id);
     console.log(data.email);
     console.log(data.name);
@@ -62,15 +62,15 @@ const UserState = (props) => {
   const logOutAdmin = () => {
     dispatch(setAdminToken(''))
     dispatch(setaName(''))
-    dispatch(setaUserId(''))
+    dispatch(setAdminId(''))
     dispatch(setaPass(''))
     dispatch(setaEmail(''))
   }
   return (
-    <UserContext.Provider value={{ createAdmin, loginAdmin, logOutAdmin }}>
+    <AdminContext.Provider value={{ createAdmin, loginAdmin, logOutAdmin }}>
       {props.children}
-    </UserContext.Provider>
+    </AdminContext.Provider>
   )
 
 }
-export default UserState;
+export default AdminState;
