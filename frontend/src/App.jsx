@@ -3,13 +3,10 @@ import "./App.css";
 import Ide from "./Screens/Ide/Ide";
 import Navbar from "./Components/Navbar";
 import UserState from "./context/users/UserState";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
-import Signup from './Components/Signup';
-import Login from './Components/Login';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Signup from "./Components/Signup";
+import Login from "./Components/Login";
+import AddQuestion from "./Screens/Admin";
 
 function App() {
   return (
@@ -21,6 +18,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<Signup />} />
             <Route exact path="/" element={<Ide />} />
+            <Route exact path="/addQuestion" element={<AddQuestion />} />
           </Routes>
           {/* <Ide /> */}
         </BrowserRouter>
