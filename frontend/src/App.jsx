@@ -24,7 +24,8 @@ function App() {
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<Signup />} />
               <Route exact path="/" element={<Ide />} />
-              <Route exact path="/allQuestion" element={<QuestionsList />} />
+              <Route exact path="/problems" element={<QuestionsList />} />
+              <Route exact path="/problems/:id" element={<Ide />} />
             </Routes>
             {/* <Ide /> */}
           </BrowserRouter>
