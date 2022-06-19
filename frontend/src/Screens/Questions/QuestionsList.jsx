@@ -11,15 +11,8 @@ const QuestionsList = () => {
     const { question } = useSelector((state) => state.question);
 
     const { allQuestion } = context;
-    const [Questions, setQuestions] = useState({})
-    const getAllQuestion = async () => {
-        await allQuestion()
-        setQuestions(question)
-        console.log("Question: ",  question);
-
-    }
     useEffect(() => {
-        getAllQuestion();
+        allQuestion()
         console.log("Que", question);
     }, [])
 
@@ -38,43 +31,20 @@ const QuestionsList = () => {
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Name</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Difficulty</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">category</th>
-                                    {/* <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Price</th> */}
-                                    {/* <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th> */}
+
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* {Questions.map((Question) => { */}
-                                    <tr>
-{/* 
-
+                                {question.payload !== undefined && question.payload.map((Question) => {
+                                    return <tr>
                                         <td class="px-4 py-3">{Question.title}</td>
                                         <td class="px-4 py-3">{Question.difficulty}</td>
-                                        <td class="px-4 py-3">{Question.category}</td> */}
-                                        {/* <td class="px-4 py-3 text-lg text-gray-900">Free</td> */}
-                                        {/* <td class="w-10 text-center">
-                                        <input name="plan" type="radio"/>
-                                    </td> */}
+                                        <td class="px-4 py-3">{Question.category}</td>
+
                                     </tr>
-                                {/* })} */}
-                                
-                                {/* <tr>
-                                    <td class="border-t-2 border-gray-200 px-4 py-3">Business</td>
-                                    <td class="border-t-2 border-gray-200 px-4 py-3">36 Mb/s</td>
-                                    <td class="border-t-2 border-gray-200 px-4 py-3">40 GB</td>
-                                    <td class="border-t-2 border-gray-200 px-4 py-3 text-lg text-gray-900">$50</td>
-                                    <td class="border-t-2 border-gray-200 w-10 text-center">
-                                        <input name="plan" type="radio"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">Exclusive</td>
-                                    <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">48 Mb/s</td>
-                                    <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">120 GB</td>
-                                    <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3 text-lg text-gray-900">$72</td>
-                                    <td class="border-t-2 border-b-2 border-gray-200 w-10 text-center">
-                                        <input name="plan" type="radio"/>
-                                    </td>
-                                </tr> */}
+                                })}
+
+
                             </tbody>
                         </table>
                     </div>
