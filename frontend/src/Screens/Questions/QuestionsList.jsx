@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import questionContext from '../../context/question/questionContext'
+import { Link } from 'react-router-dom'
 
 const QuestionsList = () => {
 
@@ -30,18 +31,25 @@ const QuestionsList = () => {
                                 <tr>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Name</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Difficulty</th>
-                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">category</th>
+                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Category</th>
+                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Status</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 {question.payload !== undefined && question.payload.map((Question) => {
                                     return <tr>
-                                        <td class="px-4 py-3">{Question.title}</td>
-                                        <td class="px-4 py-3">{Question.difficulty}</td>
-                                        <td class="px-4 py-3">{Question.category}</td>
+                                        <td class="px-1 py-1 md:px-4 md:py-3"><Link to={`${Question._id}`}>{Question.title} </Link></td>
+                                        <td class="px-1 py-1 md:px-4 md:py-3">{Question.difficulty}</td>
+                                        <td class="px-1 py-1 md:px-4 md:py-3">{Question.category}</td>
+                                        <td className='px-1 py-1 md:px-4 md:py-3'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </td>
 
                                     </tr>
+
                                 })}
 
 
