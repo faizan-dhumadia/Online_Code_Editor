@@ -14,21 +14,23 @@ import QuestionsList from "./Screens/Questions/QuestionsList";
 function App() {
   return (
     <UserState>
-      <div className="">
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/signup" element={<Signup />} />
-            {/* <Route exact path="/" element={<Ide />} /> */}
-            <Route exact path="/addQuestion" element={<AddQuestion />} />
-              
+      <QuestionState>
+        <div className="">
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route exact path="/login" element={<Login />} />
+              <Route exact path="/signup" element={<Signup />} />
+              {/* <Route exact path="/" element={<Ide />} /> */}
+              <Route exact path="/addQuestion" element={<AddQuestion />} />
+
               <Route exact path="/" element={<QuestionsList />} />
-              <Route exact path="/problems/:id" element={<Ide />} />
-          </Routes>
-          {/* <Ide /> */}
-        </BrowserRouter>
-      </div>
+              <Route exact path="/:id" element={<Ide />} />
+            </Routes>
+            {/* <Ide /> */}
+          </BrowserRouter>
+        </div>
+      </QuestionState>
     </UserState>
   );
 }
