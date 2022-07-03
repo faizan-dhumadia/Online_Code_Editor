@@ -8,6 +8,7 @@ const TextInput = ({
   value,
   onChange,
   row,
+  isRequired = false
 }) => {
   return (
     <div className="mb-6 ">
@@ -27,7 +28,7 @@ const TextInput = ({
             name={name}
             value={value}
             placeholder={placeholder}
-            required
+            required={isRequired}
             onChange={onChange}
           ></textarea>
         </>
@@ -39,7 +40,7 @@ const TextInput = ({
           name={name}
           value={value}
           placeholder={placeholder}
-          required
+          required={isRequired}
           onChange={onChange}
         />
       )}

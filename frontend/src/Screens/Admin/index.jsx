@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import TextInput from "../../Components/TextInput";
+import axios from "axios";
+
 const fieldsName = {
   title: "title",
   description: "description",
@@ -11,9 +13,12 @@ const fieldsName = {
   explanation: "explanation",
   hiddenInput: "hiddenInput",
   hiddenOutput: "hiddenOutput",
+  difficultyLevel: "difficultyLevel",
+  category: "category",
 };
+
 const AddQuestion = () => {
-  const [input, setInput] = useState({ title: "" });
+  const [input, setInput] = useState({ title: "", difficultyLevel: "Easy" });
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -22,9 +27,22 @@ const AddQuestion = () => {
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //
+    const data = await axios.post(
+      "http://localhost:5000/api/admin/questions/addQuestion",
+      {
+        questionData: JSON.stringify(input),
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    // console.log("data", data);
+    // console.log("data", input);
   };
 
   return (
@@ -34,6 +52,25 @@ const AddQuestion = () => {
       </p>
 
       <form onSubmit={handleSubmit} className="">
+        <div>
+          <label
+            htmlFor="i"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            {"Choose Difficulty"}
+          </label>
+          <select
+            name={fieldsName.difficultyLevel}
+            value={input.difficultyLevel}
+            onChange={handleChange}
+            className="mb-4 border-2 border-black block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+        </div>
+
         <TextInput
           type={"text"}
           title="Problem title"
@@ -41,6 +78,16 @@ const AddQuestion = () => {
           name={fieldsName.title}
           value={input.title}
           onChange={handleChange}
+        />
+
+        <TextInput
+          type={"text"}
+          title="Problem Category"
+          placeholder="Enter problem Category, like Array, Tree, String..."
+          name={fieldsName.category}
+          value={input.category}
+          onChange={handleChange}
+          isRequired={true}
         />
 
         <TextInput

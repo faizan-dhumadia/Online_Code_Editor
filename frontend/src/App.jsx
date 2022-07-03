@@ -10,6 +10,7 @@ import Login from "./Components/Login";
 import AddQuestion from "./Screens/Admin";
 import QuestionState from "./context/question/QuestionState";
 import QuestionsList from "./Screens/Questions/QuestionsList";
+import QuestionDescription from "./Screens/Questions/QuestionDescription";
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
               <Route exact path="/addQuestion" element={<AddQuestion />} />
 
               <Route exact path="/" element={<QuestionsList />} />
-              <Route exact path="/:id" element={<Ide />} />
+              {/* <Route exact path="/:id" element={<Ide />} /> */}
+              <Route exact path="/:id" element={<QuestionDescription />} />
             </Routes>
             {/* <Ide /> */}
           </BrowserRouter>
