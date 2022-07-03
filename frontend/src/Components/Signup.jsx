@@ -29,7 +29,7 @@ const Signup = () => {
         
     }
     return (
-        <div className='my-6 md:flex md:justify-center md:items-center'>
+        <div className='my-6 mt-24 md:flex md:justify-center md:items-center'>
 
             <form className='md:w-1/3 '>
                 <div class="my-6">

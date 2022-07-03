@@ -11,29 +11,32 @@ import AddQuestion from "./Screens/Admin";
 import QuestionState from "./context/question/QuestionState";
 import QuestionsList from "./Screens/Questions/QuestionsList";
 import QuestionDescription from "./Screens/Questions/QuestionDescription";
+import { useContext, useEffect } from "react";
+import questionContext from "./context/question/questionContext";
 
 function App() {
+  const context = useContext(questionContext);
+  const { allQuestion } = context;
+  useEffect(() => {
+    allQuestion();
+  }, []);
   return (
-    <UserState>
-      <QuestionState>
-        <div className="">
-          <BrowserRouter>
-            <Navbar />
-            <Routes>
-              <Route exact path="/login" element={<Login />} />
-              <Route exact path="/signup" element={<Signup />} />
-              {/* <Route exact path="/" element={<Ide />} /> */}
-              <Route exact path="/addQuestion" element={<AddQuestion />} />
+    <div className="">
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
+          {/* <Route exact path="/" element={<Ide />} /> */}
+          <Route exact path="/addQuestion" element={<AddQuestion />} />
 
-              <Route exact path="/" element={<QuestionsList />} />
-              {/* <Route exact path="/:id" element={<Ide />} /> */}
-              <Route exact path="/:id" element={<QuestionDescription />} />
-            </Routes>
-            {/* <Ide /> */}
-          </BrowserRouter>
-        </div>
-      </QuestionState>
-    </UserState>
+          <Route exact path="/" element={<QuestionsList />} />
+          {/* <Route exact path="/:id" element={<Ide />} /> */}
+          <Route exact path="/:id" element={<QuestionDescription />} />
+        </Routes>
+        {/* <Ide /> */}
+      </BrowserRouter>
+    </div>
   );
 }
 
