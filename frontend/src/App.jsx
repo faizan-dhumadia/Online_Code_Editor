@@ -13,6 +13,8 @@ import QuestionsList from "./Screens/Questions/QuestionsList";
 import QuestionDescription from "./Screens/Questions/QuestionDescription";
 import { useContext, useEffect } from "react";
 import questionContext from "./context/question/questionContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const context = useContext(questionContext);
@@ -24,14 +26,15 @@ function App() {
     <div className="">
       <BrowserRouter>
         <Navbar />
+        <ToastContainer />
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          {/* <Route exact path="/" element={<Ide />} /> */}
+          <Route exact path="/ide" element={<Ide />} />
           <Route exact path="/addQuestion" element={<AddQuestion />} />
 
           <Route exact path="/" element={<QuestionsList />} />
-          {/* <Route exact path="/:id" element={<Ide />} /> */}
+          <Route exact path="/:id/ide" element={<Ide />} />
           <Route exact path="/:id" element={<QuestionDescription />} />
         </Routes>
         {/* <Ide /> */}
