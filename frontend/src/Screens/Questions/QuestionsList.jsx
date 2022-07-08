@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import questionContext from "../../context/question/questionContext";
 import { Link, useNavigate } from "react-router-dom";
 import QuestionTile from "../../Components/QuestionTile";
+import Footer from "../../Components/Footer";
 
 const QuestionsList = () => {
   const nav = useNavigate();
@@ -23,7 +24,7 @@ const QuestionsList = () => {
   return (
     <div>
       <section className="text-gray-600 body-font">
-        <div className="container px-5 py-24 mx-auto">
+        <div className="container px-5 py-10 mx-auto">
           {/* <div className="flex flex-col text-center w-full mb-20">
             <h1 className="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">
               Problems
@@ -96,6 +97,8 @@ const QuestionsList = () => {
                     </div> */}
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

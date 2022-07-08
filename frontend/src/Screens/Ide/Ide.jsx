@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AceEditor from "react-ace";
-
+import { useLocation } from "react-router-dom";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-javascript";
@@ -29,6 +29,10 @@ import "ace-builds/src-noconflict/theme-textmate";
 
 import { submitCodeService, getLanguagesService } from "../../Service/service";
 import { submitCode } from "../../Service/newService";
+import { useContext } from "react";
+import userContext from "../../context/users/userContext";
+import Footer from "../../Components/Footer";
+
 function onChange(newValue) {
   //   console.log("change", newValue);
 }
@@ -255,6 +259,7 @@ let langData = [
 ];
 
 const Ide = () => {
+  const { state } = useLocation();
   const [themeSelected, setSelectedTheme] = useState(themes[6]);
   const [code, setCode] = useState("");
   const [showLangDrop, setShowLangDrop] = useState(false);
@@ -263,7 +268,8 @@ const Ide = () => {
   const [codeOutput, setCodeOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const CodeError = "Write a Code first";
+  const { notifyToast, notifyToastError } = useContext(userContext);
+  const CodeError = "Write some code inside the editor";
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -273,115 +279,85 @@ const Ide = () => {
       // console.log("Hello ,", await submitCodeService(code, editorLang, ""));
       // console.log("Output : ", await token?.stdout);
       // setCodeOutput(await token?.stdout);
-      let output = await submitCode(code, editorLang, userInput);
-      console.log(output);
+      const expectedOutput = "11";
+      let output = await submitCode(
+        code,
+        editorLang,
+        userInput,
+        expectedOutput
+      );
+      console.log("output", output);
       setCodeOutput(output?.stdout);
+      if (output?.stdout == null) {
+        setCodeOutput(output.status.description);
+        notifyToastError(output.status.description);
+      } else {
+        notifyToast("Successfully Compiled");
+      }
     } else {
-      if (editorLang == null)
-        setCodeOutput("Please select your language first");
-      else setCodeOutput(CodeError);
+      if (editorLang == null) {
+        const msg = "Please select your language first";
+        setCodeOutput(msg);
+        notifyToastError(msg);
+      } else {
+        setCodeOutput(CodeError);
+        notifyToastError(CodeError);
+      }
     }
     setLoading(false);
   };
 
   return (
-    <div className="px-6">
+    <div className="px-6 border-2 rounded-md  m-5">
+      {state && (
+        <div className=" mt-5 bg-slate-200 rounded">
+          <div className="text-center ">
+            <p className="text-base font-light">You are solving :</p>
+            <h2 className="text-xl font-semibold font-mono">{state.title}</h2>
+          </div>
+        </div>
+      )}
+
       {/* Theme / Lang Selector */}
-      <div className=" m-2 md:flex md:flex-row md:justify-between md:w-1/2">
-        <div className="flex flex-row justify-between ">
-          <select
-            onChange={(e) => setSelectedTheme(e.target.value)}
-            id="countries"
-            className="cursor-pointer my-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5"
-          >
-            {themes.map((theme) => {
-              return <option value={theme}>{theme}</option>;
-            })}
-          </select>
-          <button
-            onClick={handleSubmit}
-            className={`md:hidden relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br ${
-              loading
-                ? "from-purple-400 to-blue-300 cursor-not-allowed"
-                : "from-purple-600 to-blue-500"
-            }  group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white `}
-            disabled={loading ? true : false}
-          >
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0 flex flex-row items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span className="hidden md:block pl-2">Run Code</span>
-            </span>
-          </button>
+
+      <div className="  bg-slate-200 my-5 rounded-xl flex flex-row p-4 justify-between w-auto">
+        <div className="flex flex-row ">
+          <div className="mr-10">
+            <select
+              id="countries"
+              onChange={(e) => setSelectedTheme(e.target.value)}
+              className="select  select-primary w-full max-w-xs"
+            >
+              {themes.map((theme) => {
+                return <option value={theme}>{theme}</option>;
+              })}
+            </select>
+          </div>
+
+          <div>
+            <select
+              className="select "
+              onChange={(e) => {
+                setEditorLang(e.target.value);
+                console.log(e.target.value);
+              }}
+            >
+              <option disabled selected>
+                Select Language
+              </option>
+              {langData.map((item) => {
+                return <option value={item.id}>{item.name}</option>;
+              })}
+            </select>
+          </div>
         </div>
 
-        <select
-          onChange={(e) => {
-            setEditorLang(e.target.value);
-            console.log(e.target.value);
-          }}
-          className="cursor-pointer my-1 w-full md:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5"
-        >
-          {/* {languages.map((lang) => {
-            return <option value={lang}>{lang}</option>;
-          })} */}
-          <option disabled selected>
-            Select Language
-          </option>
-          {langData.map((item) => {
-            return <option value={item.id}>{item.name}</option>;
-          })}
-        </select>
-        {/* Submit Button */}
-        <button
+        <div
+          className={`${loading ? "loading" : ""} btn btn-wide `}
           onClick={handleSubmit}
-          className={`hidden min-w-fit md:block relative items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br ${
-            loading
-              ? "from-purple-400 to-blue-300 cursor-not-allowed"
-              : "from-purple-600 to-blue-500"
-          } group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white `}
-          disabled={loading ? true : false}
         >
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0 flex flex-row items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span className="hidden md:block pl-2">Run Code</span>
-          </span>
-        </button>
+          <button className="">Run code</button>
+        </div>
       </div>
 
       <div className="md:flex md:flex-row ">
@@ -412,6 +388,7 @@ const Ide = () => {
           />
         </div>
 
+        <div className="divider divider-horizontal"></div>
         {/* Input and Output Box */}
         <div className="md:w-1/2 h-1/2 ">
           {/* Input Box */}
@@ -495,6 +472,8 @@ const Ide = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
