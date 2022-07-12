@@ -10,7 +10,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 
 const UserState = (props) => {
-  const host = "http://localhost:5000";
+  const host = "https://online-code-kkw-backend.herokuapp.com";
   const dispatch = useDispatch();
 
   const createUser = async (name, email, password) => {

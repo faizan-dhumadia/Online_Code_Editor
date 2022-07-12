@@ -31,7 +31,7 @@ const AddQuestion = () => {
     e.preventDefault();
     //
     const data = await axios.post(
-      "http://localhost:5000/api/admin/questions/addQuestion",
+      "https://online-code-kkw-backend.herokuapp.com/api/admin/questions/addQuestion",
       {
         questionData: JSON.stringify(input),
       },

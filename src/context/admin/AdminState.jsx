@@ -4,7 +4,7 @@ import { setAdminToken, setaEmail, setaName, setaPass, setAdminId } from "../../
 
 
 const AdminState = (props) => {
-  const host = "http://localhost:5000"
+  const host = "https://online-code-kkw-backend.herokuapp.com"
   const dispatch = useDispatch()
 
   const createAdmin = async (name, email, password) => {
